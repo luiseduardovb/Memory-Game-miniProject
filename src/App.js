@@ -14,8 +14,6 @@ import {
   MediumButton,
   MultiPlayer,
   PlayerWrapper,
-  ResetButton,
-  ResetWrapper,
   SinglePlayer,
   Title,
 } from "./styles";
@@ -44,9 +42,6 @@ function App() {
       </DifficultyWrapper>
       <GlobalStyle />
       <CardList />
-      <ResetWrapper>
-        <ResetButton>Reset</ResetButton>
-      </ResetWrapper>
     </ThemeProvider>
   );
 }

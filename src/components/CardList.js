@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //Styling
-import { ListWrapper } from "../styles";
+import { ListWrapper, ResetButton, ResetWrapper } from "../styles";
 
 //Components
 import CardItem from "./CardItem";
@@ -11,29 +11,48 @@ import cards from "../cards";
 
 const CardList = () => {
   const [_cards, setCards] = useState(cards);
+  const [twoCards, setTwoCards] = useState([]);
 
   const updateCard = (flippedCardID) => {
     const findCard = _cards.find((cards) => cards.id === flippedCardID);
     findCard.flipped = !findCard.flipped;
 
-    //   if (findCard.length === 2) {
-    //     if (findCard[0].name === findCard[1].name) {
-    //       setCards();
-    //     }
-    //   }
-  };
-  const shuffleCards = cards.sort((a, b) => {
-    return 0.5 - Math.random();
-  });
+    setTwoCards([...twoCards, findCard]);
+    setCards([..._cards]);
 
-  const cardList = shuffleCards.map((card) => (
+    if (twoCards.length === 2) {
+      if (twoCards[0].name === twoCards[1].name) {
+        twoCards = [];
+      } else {
+        const findCard2 = _cards.find((card) => card.id === twoCards[0].id);
+
+        setCards([..._cards]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const shuffleCards = _cards.sort((a, b) => {
+      return 0.5 - Math.random();
+    });
+    setCards(shuffleCards);
+  }, []);
+
+  // const handleReset = () => {};
+
+  const cardList = _cards.map((card) => (
     <CardItem card={card} updateCard={updateCard} />
   ));
 
   return (
-    <ListWrapper className="container">
-      <div className="row">{cardList}</div>
-    </ListWrapper>
+    <div>
+      <ListWrapper className="container">
+        <div className="row">{cardList}</div>
+      </ListWrapper>
+      <ResetWrapper>
+        <ResetButton>Reset</ResetButton>
+      </ResetWrapper>
+    </div>
   );
 };
 
